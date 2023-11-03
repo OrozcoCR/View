@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="shortcut icon" href="/img/logo.png" type="image/x-icon">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        let rutaSW = "sw.js";
+        if (navigator.serviceWorker){
+            if (window.location.href.includes("localhost"))
+            {
+                rutaSW="/sw.js";
+            }
+            navigator.serviceWorker.register(rutaSW);
+        }
+    </script>
+    <link rel="manifest" href="manifest.json">
+    <title>Visor de Contactos</title>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            personas: [
+              {
+                nombre: "Mariana",
+                apellido1: "Artavia",
+                apellido2: "Venegas",
+                ocupacion: "Estudiante",
+                telefonos: ["83352318"],
+              },
+              {
+                nombre: "María Paula",
+                apellido1: "Artavia",
+                apellido2: "Venegas",
+                ocupacion: "Estudiante",
+                telefonos: ["83784120"],
+              },
+              {
+                nombre: "Shirleny",
+                apellido1: "Venegas",
+                apellido2: "Rodríguez",
+                ocupacion: "Profesora",
+                telefonos: ["83718760"],
+              },
+            ],
+            personaActual: 0,
+          };
+        },
+        created: function () {
+          window.vue_componente = this;
+        },
+        methods: {
+          avanzarPersona() {
+            if (this.personaActual < this.personas.length - 1) {
+              this.personaActual++;
+            }
+          },
+          retrocederPersona() {
+            if (this.personaActual > 0) {
+              this.personaActual--;
+            }
+          },
+        },
+      });
+    </script>
+  </head>
+  <body>
+    <div id="app">
+      <h1>
+        {{ personas[personaActual].nombre }} {{
+        personas[personaActual].apellido1 }} {{
+        personas[personaActual].apellido2 }}
+      </h1>
+      <h2>{{ personas[personaActual].ocupacion }}</h2>
+      <div>Telefonos: {{ personas[personaActual].telefonos.join(', ') }}</div>
+      <button @click="retrocederPersona">Anterior</button>
+      <button @click="avanzarPersona">Siguiente</button>
+    </div>
+
+    <script>
+      app.mount("#app");
+    </script>
+  </body>
+</html>
